@@ -24,7 +24,9 @@ class BlogServiceImpl @Autowired constructor(private val blogRepository: BlogRep
     }
 
     override fun create(blog: Blog): Blog {
-        TODO("Not yet implemented")
+        blogRepository.save(blog)
+
+        return blog
     }
 
     override fun update(id: Long, blog: Blog): Blog {
