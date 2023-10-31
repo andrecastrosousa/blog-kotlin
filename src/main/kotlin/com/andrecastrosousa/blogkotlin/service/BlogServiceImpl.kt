@@ -2,6 +2,7 @@ package com.andrecastrosousa.blogkotlin.service
 
 import com.andrecastrosousa.blogkotlin.model.Blog
 import com.andrecastrosousa.blogkotlin.repository.BlogRepository
+import org.apache.tomcat.util.http.parser.HttpParser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
@@ -30,10 +31,24 @@ class BlogServiceImpl @Autowired constructor(private val blogRepository: BlogRep
     }
 
     override fun update(id: Long, blog: Blog): Blog {
-        TODO("Not yet implemented")
+        val optionalBlog: Optional<Blog> = blogRepository.findById(id);
+        if(optionalBlog.isPresent) {
+            val foundBlog: Blog = optionalBlog.get();
+            foundBlog.name = blog.name
+            blogRepository.save(foundBlog);
+            return blog
+        }
+
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Blog not found")
     }
 
     override fun deleteById(id: Long) {
-        TODO("Not yet implemented")
+        val optionalBlog: Optional<Blog> = blogRepository.findById(id)
+        if(optionalBlog.isPresent) {
+            blogRepository.deleteById(id)
+            return
+        }
+
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Blog not found")
     }
 }
