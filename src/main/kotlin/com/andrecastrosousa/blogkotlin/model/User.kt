@@ -1,8 +1,10 @@
 package com.andrecastrosousa.blogkotlin.model
 
+import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 
+@Entity
 class User(
     var login: String,
     var firstname: String,
